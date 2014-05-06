@@ -11,6 +11,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
  <context:component-scan base-package="org.phelim.controller" />
  <mvc:annotation-driven />
+ 
+ <!-- 靜態資源請求 不透過 servlet -->
+ <mvc:default-servlet-handler/> 
  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name="prefix" value="WEB-INF/jsp/" />
       <property name="suffix" value=".jsp" />
