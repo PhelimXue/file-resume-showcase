@@ -1,21 +1,30 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
- xmlns:context="http://www.springframework.org/schema/context"
- xmlns:mvc="http://www.springframework.org/schema/mvc"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans   
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
- <context:component-scan base-package="org.phelim.controller" />
- <mvc:annotation-driven />
- 
- <!-- 靜態資源請求 不透過 servlet -->
- <mvc:default-servlet-handler/> 
- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name="prefix" value="WEB-INF/jsp/" />
-      <property name="suffix" value=".jsp" />
-    </bean>
+	<context:component-scan base-package="org.phelim.controller" />
+	<mvc:annotation-driven />
+
+	<!-- 靜態資源請求 不透過 servlet -->
+	<mvc:default-servlet-handler />
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 限制上傳檔案大小 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- max upload size in bytes -->
+		<property name="maxUploadSize" value="2516582400" /> <!-- 2.3G -->
+		<!-- max size of file in memory (in bytes) -->
+		<property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+	</bean>
 </beans>

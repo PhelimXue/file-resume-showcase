@@ -1,26 +1,13 @@
-<!DOCTYPE HTML>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8">
-<title>jQuery File Upload Example</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>file-resume-showcase</title>
 </head>
 <body>
-<input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
-<script src="resource/js/jquery/1.9.1/jquery.min.js"></script>
-<script src="resource/js/jquery-fileupload/vendor/jquery.ui.widget.js"></script>
-<script src="resource/js/jquery-fileupload/jquery.iframe-transport.js"></script>
-<script src="resource/js/jquery-fileupload/jquery.fileupload.js"></script>
-<script>
-$(function () {
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
-            });
-        }
-    });
-});
-</script>
-</body> 
+<a href="upload_simple">Simple Upload with jQuery file lib.</a>
+
+</body>
 </html>
