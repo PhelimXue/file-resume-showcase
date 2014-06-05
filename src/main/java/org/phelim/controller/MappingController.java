@@ -6,15 +6,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class NormalController {
+public class MappingController {
 
+	// 簡易上傳
 	@RequestMapping(value = "upload_simple", method = RequestMethod.GET)
 	public String uploadSimple() {
 		return "upload_simple";
 	}
 	
-	@RequestMapping("upload2")
-	public @ResponseBody String uploadPage2(){
-		return "upload2";
+	// 上傳續傳
+	@RequestMapping(value = "upload_resume", method = RequestMethod.GET)
+	public String uploadResume() {
+		return "upload_resume";
 	}
 }

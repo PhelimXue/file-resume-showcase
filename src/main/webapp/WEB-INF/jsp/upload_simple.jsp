@@ -21,7 +21,7 @@
 <body>
 
 <input id="fileupload" type="file" name="files" multiple><br>
-<input id="up_btn" type="button" name="up_btn" value="Upload"> <input id="stop_btn" type="button" name="stop_btn" value="Cancel">
+<input id="stop_btn" type="button" name="stop_btn" value="Cancel"> <input id="up_btn" type="button" name="up_btn" value="Upload">
 <div id="progress">
     <div class="bar" style="width: 0%;"></div>
 </div>

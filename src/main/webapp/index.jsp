@@ -7,7 +7,7 @@
 <title>file-resume-showcase</title>
 </head>
 <body>
-<a href="upload_simple">Simple Upload with jQuery file lib.</a>
-
+<a href="upload_simple">Simple Upload with jQuery file lib.</a> <br>
+<a href="upload_resume">Resume file upload with jQuery file lib.</a>
 </body>
 </html>
