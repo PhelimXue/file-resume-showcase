@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Upload test</title>
+<title>Upload simple</title>
 
 <script src="resource/js/jquery/1.9.1/jquery.min.js"></script>
 <script src="resource/js/jquery-fileupload/vendor/jquery.ui.widget.js"></script>

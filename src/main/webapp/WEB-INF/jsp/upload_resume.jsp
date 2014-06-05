@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Upload test</title>
+<title>Upload resume</title>
 
 <script src="resource/js/jquery/1.9.1/jquery.min.js"></script>
 <script src="resource/js/spark-md5.js"></script>
@@ -32,12 +32,12 @@ $(function () {
     $('#fileupload').fileupload({
     	url: 'upload_resume',
         dataType: 'json',
-        maxChunkSize: 5 * 1000 * 1000,
+        maxChunkSize: 10 * 1024 * 1024,
 		limitConcurrentUploads: 1,
-        maxNumberOfFiles: 1,
         sequentialUploads: true, // 設定必須循序傳送
         singleFileUploads: true, // 限制只能傳送單檔  			            
         replaceFileInput: false,
+        maxNumberOfFiles: 1,
         limitMultiFileUploads: 1,			           
         autoUpload: false,
         add: function (e, data) {            
@@ -54,7 +54,7 @@ $(function () {
         done: function (e, data) {
             $.each(data.result.files, function (index, file) {
                 $('<p/>').text(file.name).appendTo(document.body);
-                alert("download completed");
+                alert("Upload completed");
             });
         },
 	    progressall: function (e, data) {
@@ -63,7 +63,7 @@ $(function () {
 	            'width',
 	            progress + '%'
 	        );
-	    }
+	    },
 	});
 	});
 	
@@ -90,12 +90,12 @@ $(function () {
 	
 	function doMd5checksum() {
 
-        //if (running) return;
+        if (running) return;
         
 		
         var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
             file = input.files[0]; //讀取file的檔案
-            chunkSize = 2097152,                           // read in chunks of 2MB
+            chunkSize = 2097152,// read in chunks of 2MB
             chunks = Math.ceil(file.size / chunkSize),
             currentChunk = 0,
             spark = new SparkMD5.ArrayBuffer(),                       
@@ -103,7 +103,7 @@ $(function () {
 
         frOnload = function(e) {                       
 
-            spark.append(e.target.result);                 // append array buffer
+            spark.append(e.target.result);// append array buffer
             currentChunk += 1;
 
             if (currentChunk < chunks) {

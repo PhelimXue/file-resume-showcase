@@ -48,7 +48,9 @@ public class UtilController {
 			@RequestParam("md5") String md5 ,@RequestParam("size")long filesize) throws Exception {
 
 		createDir(new File(tmpDirectory));
+		createDir(new File(saveDirectory));
 		File tmpFile = new File(tmpDirectory + md5);
+		File saveFile = new File(saveDirectory + file.getOriginalFilename());
 		ResponseMeta meta = new ResponseMeta();
 		
 		System.out.println("*************************");
@@ -81,10 +83,11 @@ public class UtilController {
 				endPosition = contentRange.getEndPosition();
 			}else {
 				meta.setError("could not found range");
+				response.setStatus(400);
 				return meta.output();
 			}
 			
-			// 檔案寫入主體
+			// 檔案寫入主體 只有在 startPosition <= localFile < endPosition 時才執行
 			long localFileSize = tmpFile.length();
 			if(startPosition >= localFileSize && localFileSize < endPosition){
 				// 建立續傳寫入
@@ -106,16 +109,16 @@ public class UtilController {
 			}
 		}
 		
-		// 若是檔案儲存完成則執行
+		// 作檔案傳輸後的判斷
 		if (tmpFile.length() >= filesize) {
 			response.setHeader("Range", "0-" + (tmpFile.length()-1));
 			boolean check = md5Check(tmpFile, md5);
 			if (check) {
-				// do something
-				System.out.println("@ download completed");
+				tmpFile.renameTo(saveFile);
+				System.out.println("@ Upload completed");
 			}else {
 				meta.setError("checksum fail");
-				tmpFile.delete();
+				response.setStatus(417);
 			}
 		}else if (tmpFile.length() < filesize) {
 			meta.setName(file.getOriginalFilename());
@@ -136,9 +139,10 @@ public class UtilController {
 	private boolean md5Check(File tmpFile,String md5) throws Exception{
 		System.out.println("@ MD5 Check sum");
 		MD5CheckSum fileMD5 = new MD5CheckSum(tmpFile);
-		if (fileMD5.getHex().equalsIgnoreCase(md5)) {
+		if (fileMD5.getHex().equalsIgnoreCase(md5+"1")) {
 			return true;
 		}else {
+			tmpFile.delete();
 			return false;
 		}
 	}
