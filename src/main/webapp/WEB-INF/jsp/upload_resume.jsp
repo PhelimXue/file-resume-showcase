@@ -57,6 +57,12 @@ $(function () {
                 alert("Upload completed");
             });
         },
+        fail: function (e, data) {
+        	var response = jQuery.parseJSON(data.jqXHR.responseText);
+        	if(response.files[0].error != null){
+        		alert(response.files[0].error);
+        	}
+        },
 	    progressall: function (e, data) {
 	        var progress = parseInt(data.loaded / data.total * 100, 10);
 	        $('#progress .bar').css(
