@@ -137,11 +137,13 @@ public class UtilController {
 	
 	// MD5 Checksum
 	private boolean md5Check(File tmpFile,String md5) throws Exception{
-		System.out.println("@ MD5 Check sum");
+		System.out.print("@ MD5 Check sum: ");
 		MD5CheckSum fileMD5 = new MD5CheckSum(tmpFile);
-		if (fileMD5.getHex().equalsIgnoreCase(md5+"1")) {
+		if (fileMD5.getHex().equalsIgnoreCase(md5)) {
+			System.out.println("true");
 			return true;
 		}else {
+			System.out.println("false");
 			tmpFile.delete();
 			return false;
 		}
