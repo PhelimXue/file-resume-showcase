@@ -4,7 +4,7 @@
 概述 (Description)
 ------------
 展示檔案下載與上傳的續傳功能  
-量的使用了 jQuery 的 lib 詳細請見最底下的 Reference
+大量的使用了 jQuery 的 lib 詳細請見最底下的 Reference
 
 
 快速運行 (Quick Start)
@@ -31,4 +31,7 @@ Open with browser
 
 參考 (Reference)
 ------------
-未來補上
+<a href="https://github.com/blueimp/jQuery-File-Upload" target="_blank">jQuery file upload</a>  
+<a href="http://krams915.blogspot.tw/2012/06/file-upload-with-spring-and-jquery-part_2793.html" target="_blank">file upload with spring</a>  
+<a href="http://www.cnblogs.com/ASPNET2008/p/3360427.html" target="_blank">Mvc下异步断点续传大文件 (C#)</a>  
+
