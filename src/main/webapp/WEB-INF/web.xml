@@ -2,7 +2,27 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>file-resume-showcase</display-name>
   <description>The file resume example.</description>
-  
+
+	<!-- Log4j -->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>file-resume-showcase.root</param-value>
+	</context-param>
+	<!--由Sprng载入的Log4j配置文件位置 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<!-- 設定每 300 秒重新掃描一次設定 -->
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>300000</param-value>
+	</context-param>
+	<!-- Web 项目 Spring 加载 Log4j 的监听 -->
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	
   <servlet>
     <servlet-name>spring</servlet-name>
     <servlet-class>

@@ -1,8 +1,7 @@
 package org.phelim.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.phelim.model.ContentRange;
 import org.phelim.model.MD5CheckSum;
 import org.phelim.model.ResponseMeta;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class UtilController {
-
+	
+	private static Logger log = LoggerFactory.getLogger("C");
+	
 	@Value("${file.tmp.path}")
 	private String tmpDirectory; // 暫儲的路徑
 	
@@ -33,7 +36,7 @@ public class UtilController {
 	@RequestMapping(value = "upload_simple", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String fileUpload(@RequestParam("files") MultipartFile file) throws Exception {
-		System.out.println("save file " + file.getOriginalFilename());
+		log.debug("save file " + file.getOriginalFilename());
 		createDir(new File(tmpDirectory));
 		createDir(new File(saveDirectory));
 		file.transferTo(new File(saveDirectory + file.getOriginalFilename()));
@@ -53,30 +56,31 @@ public class UtilController {
 		File saveFile = new File(saveDirectory + file.getOriginalFilename());
 		ResponseMeta meta = new ResponseMeta();
 		
-		System.out.println("*************************");
-		System.out.println("@ file size: "+filesize);
-		System.out.println("@ tmp size: "+tmpFile.length());
+		log.debug("*************************");
+		log.debug("@ file size: "+filesize);
+		log.debug("@ tmp size: "+tmpFile.length());
 		// 判斷暫存區內是否有檔案 有則開啟續傳模式 無則使用一般寫入
 		if (!tmpFile.exists()) {
 			// new file
-			System.out.println("@ new file");
+			log.debug("@ new file");
 			file.transferTo(tmpFile);
 			response.setHeader("Range", "0-" + (file.getSize() - 1));
 			meta.setName(file.getOriginalFilename());
 			meta.setSize(tmpFile.length());
 		}else if (tmpFile.length() >= filesize) {
 			// 檔案已經完整的存在檔案內
-			System.out.println("@ full file");
+			log.debug("@ full file");
 			meta.setName(file.getOriginalFilename());
 			meta.setSize(tmpFile.length());
 		}else {
 			// resume file
-			System.out.println("@ resume file");
+			log.debug("@ resume file");
 			long startPosition = 0;
 			long endPosition = 0;
 			// 取得ContentRange e.g bytes 0-19999999/209715200
 			// 並定義出 起始值 startPosition 和 終值 endPosition
 			String range = (String)request.getHeader("Content-Range");
+			log.debug("Content-Range: " + range);
 			if (range != null) {
 				ContentRange contentRange = new ContentRange(range);
 				startPosition = contentRange.getStartPosition();
@@ -91,11 +95,10 @@ public class UtilController {
 			long localFileSize = tmpFile.length();
 			if(startPosition >= localFileSize && localFileSize < endPosition){
 				// 建立續傳寫入
-				@SuppressWarnings("resource")
 				RandomAccessFile oSavedFile = new RandomAccessFile(
 						tmpFile, "rw");
 
-				FileInputStream fis = (FileInputStream)file.getInputStream();
+				InputStream fis = file.getInputStream();
 
 				// 作續傳寫入
 				oSavedFile.seek(localFileSize);
@@ -104,6 +107,8 @@ public class UtilController {
 				while ((nRead = fis.read(b, 0, 1024)) > 0) {
 					oSavedFile.write(b, 0, nRead);
 				}
+				fis.close();
+				oSavedFile.close();
 				meta.setName(file.getOriginalFilename());
 				meta.setSize(tmpFile.length());
 			}
@@ -115,7 +120,7 @@ public class UtilController {
 			boolean check = md5Check(tmpFile, md5);
 			if (check) {
 				tmpFile.renameTo(saveFile);
-				System.out.println("@ Upload completed");
+				log.debug("@ Upload completed");
 			}else {
 				meta.setError("checksum fail");
 				response.setStatus(417);
@@ -140,10 +145,10 @@ public class UtilController {
 		System.out.print("@ MD5 Check sum: ");
 		MD5CheckSum fileMD5 = new MD5CheckSum(tmpFile);
 		if (fileMD5.getHex().equalsIgnoreCase(md5)) {
-			System.out.println("true");
+			log.debug("true");
 			return true;
 		}else {
-			System.out.println("false");
+			log.debug("false");
 			tmpFile.delete();
 			return false;
 		}
