@@ -25,7 +25,7 @@ Download zip file and run command below.
 Open with browser
 
 <blockquote>
-<p>http://localhost:8080/file-resume-showcase-master/</p>
+<p>http://localhost:8080/file-resume-showcase/</p>
 </blockquote>
 
 
