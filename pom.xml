@@ -405,7 +405,7 @@
 	<!-- 版本設定 -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.2.3.RELEASE</spring.version>
+		<spring.version>3.2.4.RELEASE</spring.version>
 		<webflow.version>2.0.8.RELEASE</webflow.version>
 		<aspectj.version>1.6.5.RELEASE</aspectj.version>
 		<spring.security.version>3.1.0.RELEASE</spring.security.version>
